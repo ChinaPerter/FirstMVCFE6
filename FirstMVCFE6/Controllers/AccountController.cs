@@ -8,6 +8,7 @@ namespace FirstMVCFE6.Controllers
 {
     public class AccountController : Controller
     {
+        private DAL.AccountContext db = new DAL.AccountContext();
         //
         // GET: /Account/
         public ActionResult Index()
@@ -27,7 +28,18 @@ namespace FirstMVCFE6.Controllers
             string strEmail = fc["InputEmail"];
             string password = fc["InputPassword"];
 
-            ViewBag.LoginState = strEmail +   "登录后。。。。。";
+            var user = db.SysUsers.Where(b => b.Email == strEmail & b.Password == password);
+            if (user.Count() > 0)
+            {
+                ViewBag.LoginState = strEmail + "登录成功。。。。。";
+            }
+            else
+            {
+                ViewBag.LoginState = strEmail + "用户不存在。。。。。";
+
+            }
+
+            
 
             return View();
         }
