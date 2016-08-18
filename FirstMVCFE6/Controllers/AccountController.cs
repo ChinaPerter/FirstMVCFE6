@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FirstMVCFE6.Models;
 
 namespace FirstMVCFE6.Controllers
 {
@@ -13,7 +14,7 @@ namespace FirstMVCFE6.Controllers
         // GET: /Account/
         public ActionResult Index()
         {
-            return View();
+            return View(db.SysUsers);
         }
 
         public ActionResult Login()
@@ -43,6 +44,72 @@ namespace FirstMVCFE6.Controllers
 
             return View();
         }
+        public ActionResult Details(int Id)
+        {
+            SysUser sysUser = db.SysUsers.Find(Id);
+
+            return View(sysUser);
+        }
+
+
+        //增加用户
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(SysUser sysUser)
+        {
+            db.SysUsers.Add(sysUser);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        
+        }
+
+
+        //修改用户
+        public ActionResult Edit(int Id)
+        {
+            SysUser sysUser = db.SysUsers.Find(Id);
+            return View(sysUser);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult Edit(SysUser sysUser)
+        {
+            db.Entry(sysUser).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index"); 
+        }
+
+
+        //删除用户
+        public ActionResult Delete(int Id)
+        {
+            SysUser sysUser = db.SysUsers.Find(Id);
+
+            return View(sysUser);
+        }
+
+
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int Id)
+        {
+            SysUser sysUser = db.SysUsers.Find(Id);
+
+            db.SysUsers.Remove(sysUser);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
         public ActionResult Register()
         {
